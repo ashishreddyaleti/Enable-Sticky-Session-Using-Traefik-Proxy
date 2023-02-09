@@ -1,0 +1,27 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>Facade Application</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io({ transports: ["polling"]});
+
+      socket.on('connect', function() {
+        console.log('Connected to server');
+      });
+
+      socket.on('message', function(message) {
+        console.log(`Received message: ${message}`);
+      });
+
+      setInterval(() => {
+        socket.emit('message', 'Hello from client');
+      }, 1000);
+    </script>
+  </head>
+  <body>
+    <h1>Facade Application</h1>
+    <p>Connected to server: <span id="connected"></span></p>
+    <p>Message: <span id="message"></span></p>
+  </body>
+</html>

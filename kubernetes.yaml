@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: socketio
+  labels:
+    app: socketio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: socketio
+  template:
+    metadata:
+      labels:
+        app: socketio
+    spec:
+      containers:
+      - name: socketio
+        image: socketio
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        
+        
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: socketio
+spec:
+  selector:
+    app: socketio
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+    
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: socketio
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`api.ashish.net`) && PathPrefix (`/devops/socketio`)
+    kind: Rule
+    middlewares:
+    - name: socketio
+    services:
+    - name: socketio
+      port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: socketio
+spec:
+  stripPrefixRegex:
+    regex:
+      - "/[^/]*/[^/]*"
+
