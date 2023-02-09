@@ -21,17 +21,16 @@ spec:
         ports:
         - containerPort: 3000
         
-        
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
   name: socketio
-  annotations:
-          #traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
-          #traefik.ingress.kubernetes.io/service.sticky.cookie.name: session_id
-          #traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
+  # annotations:
+  #         traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
+  #         traefik.ingress.kubernetes.io/service.sticky.cookie.name: session_id
+  #         traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
 spec:
   selector:
     app: socketio
